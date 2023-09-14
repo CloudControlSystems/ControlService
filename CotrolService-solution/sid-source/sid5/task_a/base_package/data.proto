@@ -1,0 +1,21 @@
+syntax = "proto3";
+//option go_package = ".;TaskServer";
+package TaskServer;
+
+//接受任务数据请求
+message TransmitTaskDataRequest {
+  //task order
+  uint32 taskOrder = 1;
+  // data
+  bytes transmitData =2;
+}
+message TransmitTaskDataResponse {
+  //成功创建 pod 的状态码，1表示成功
+  uint32 result = 1;
+  //pod共享存储路径
+  string volumePath = 2;
+}
+
+service TaskDataTransmitService {
+  rpc TransmitTaskData(TransmitTaskDataRequest) returns (TransmitTaskDataResponse);
+}

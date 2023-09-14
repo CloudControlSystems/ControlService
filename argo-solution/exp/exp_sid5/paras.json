@@ -1,0 +1,9 @@
+{
+  "valueA": task0,
+  "valueB": task1,
+  "valueC": task2,
+  "valueD": task3,
+  "valueE": task4,
+  "valueF": task5,
+  "redisServer": 172.16.96.100
+}
