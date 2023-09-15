@@ -9,7 +9,9 @@ restructured method to optimize the computation-intensive algorithms in the CCSs
 However, there is still a gap in the concept of cloud services. The challenges here are 
 how to define and submit these algorithms' workflows as cloud services and provide an 
 automated workflow engine to execute these algorithms' workflows in a containerized 
-manner. With these challenges, we propose a containerized solution for the 
+manner. 
+
+With these challenges, we propose a containerized solution for the 
 Control-algorithm-as-a-Service (C3aS) in the CCSs, namely `ControlService`. 
 It offers the control algorithm as a cloud workflow service and uses the customized 
 workflow engine to realize the containerized execution of the cloud workflow service. 
@@ -21,16 +23,9 @@ the CCSs.
 
 ## Access notification
 
-Over the past two years, our team has been dedicated to the practical application research 
-of cloud control systems (CCSs), trying to describe or run the control algorithm or 
-application using cloud workflow. Up to now, a containerized solution for 
-Control-Algorithm-as-a-Service (C3aS) named `ControlService` has been presented.
-We have open-sourced the `ControlService`, which has been applied to the workflow 
-containerized execution of subspace identification algorithm. The solution greatly 
-accelerates the execution efficiency of subspace identification algorithm. 
-YYou can deploy the `ControlService` solution and test the performance improvement of 
-the subspace identification algorithm under the `ControlService` solution and the 
-`Argo` solution.
+Over the past two years, our team has been dedicated to the practical application research of cloud control systems (CCSs), trying to describe or run the control algorithm or application using cloud workflow. Up to now, a containerized solution for 
+Control-Algorithm-as-a-Service (C3aS) named `ControlService` has been presented. We have open-sourced the `ControlService`, which has been applied to the workflow containerized execution of subspace identification algorithm. The solution greatly accelerates the execution efficiency of subspace identification algorithm. You can deploy the `ControlService` solution and test the performance improvement of 
+the subspace identification algorithm under the `ControlService` solution and the `Argo` solution.
 
 We welcome you to download, learn, and work together to maintain the `ControlService` with 
 us. If you use it for scientific research and engineering applications, please be sure 
