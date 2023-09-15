@@ -1,0 +1,283 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-container-builder
+  labels:
+    app: task-container-builder
+spec:
+  selector:
+    app: builder
+  ports:
+    - port: 7070
+      protocol: TCP
+      targetPort: 7070
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-container-builder-deploy
+  namespace: default
+  labels:
+    app: grpc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: builder
+  template:
+    metadata:
+      labels:
+        app: builder
+    spec:
+      volumes:
+        - name: log-volume
+          hostPath:
+            path: /home
+        - name: config-volume
+          hostPath:
+            path: /etc/kubernetes
+        - name: current-pem-volume
+          hostPath:
+            path: /etc/kubernetes/ssl
+      #        - name: server-ca-volume
+      #          hostPath:
+      #            path: /etc/etcd/ssl
+      containers:
+        - name: task-container-builder-ctr
+          # Subspace Identification workflow
+          image: shanchenggang/task-container-builder:v12.0
+          imagePullPolicy: IfNotPresent
+          #imagePullPolicy: Always
+          ports:
+            - containerPort: 7070
+              hostPort: 7070
+          volumeMounts:
+            - name: log-volume
+              mountPath: /home
+            - name: config-volume
+              mountPath: /etc/kubernetes
+            - name: current-pem-volume
+              mountPath: /etc/kubernetes/ssl
+          #            - name: server-ca-volume
+          #              mountPath: /etc/etcd/ssl
+          env:
+            #            - name: ETCD_HOST
+            #              valueFrom:
+            #                configMapKeyRef:
+            #                  name: cluster-info
+            #                  key: etcd.host
+            #            - name: ETCD_PORT
+            #              valueFrom:
+            #                configMapKeyRef:
+            #                  name: cluster-info
+            #                  key: etcd.port
+            - name: MASTER_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: cluster-info
+                  key: master.ip
+            - name: GATHER_TIME
+              valueFrom:
+                configMapKeyRef:
+                  name: cluster-info
+                  key: gather.time
+            - name: NODE_NUM
+              valueFrom:
+                configMapKeyRef:
+                  name: cluster-info
+                  key: node.num
+            - name: REDIS_SERVER
+              valueFrom:
+                configMapKeyRef:
+                  name: cluster-info
+                  key: redis.server
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: cluster-info
+                  key: redis.port
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: grpc
+  name: cluster-info
+  namespace: default
+data:
+  #Please change to your cluster Master address
+  #etcd.host: 0.0.0.0
+  #etcd.port: "2379"
+  #Please change to your cluster Master address
+  master.ip: 0.0.0.0
+  #the number of cluster node
+  node.num: "6"
+  #the time interval of gathering data
+  gather.time: "500"
+  redis.server: 0.0.0.0
+  redis.port: "6379"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: workflow-injector
+  labels:
+    app: workflow-injector
+spec:
+  selector:
+    app: injector
+  ports:
+    - port: 7070
+      protocol: TCP
+      targetPort: 7070
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workflow-injector-deploy
+  namespace: default
+  labels:
+    app: injector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: injector
+  template:
+    metadata:
+      labels:
+        app: injector
+    spec:
+      containers:
+        - name: workflow-injector-ctr
+          #Subspace Identification workflow
+          image: shanchenggang/workflow-injector:v11.0
+          imagePullPolicy: IfNotPresent
+          #imagePullPolicy: Always
+          command: [ "./workflowInjector" ]
+          #total number of workflows
+          args: [ "1" ]
+          ports:
+            - containerPort: 7070
+              hostPort: 7070
+          env:
+            - name: TASK_NUMBERS
+              valueFrom:
+                configMapKeyRef:
+                  name: workflow-inject
+                  key: task.numbers
+          volumeMounts:
+            - name: dependency-volume
+              mountPath: /config
+      volumes:
+        - name: dependency-volume
+          configMap:
+            name: dependency-inject
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: inject
+  name: workflow-inject
+  namespace: default
+data:
+  #task number in one workflow
+  task.numbers: "6"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: config
+  name: dependency-inject
+  namespace: default
+data:
+  dependency.json: |
+    {
+      "0": {
+          "input": [],
+          "output": ["1","2"],
+          "image": ["task_0:v1.0"],
+          "cpuNum": ["4000"],
+          "memNum": ["8000"],
+          "args": [],
+          "labelName": ["app"],
+          "labelValue": ["task"],
+          "timeout": ["5"],
+          "minCpu": ["500"],
+          "minMem": ["1000"],
+          "taskFlag": ["startTask"]
+      },
+      "1": {
+          "input": ["0"],
+          "output": ["3","4","5"],
+          "image": ["task_a:v1.0"],
+          "cpuNum": ["4000"],
+          "memNum": ["8000"],
+          "args": [],
+          "labelName": ["app"],
+          "labelValue": ["task"],
+          "timeout": ["6"],
+          "minCpu": ["500"],
+          "minMem": ["1000"],
+          "taskFlag": ["normalTask"]
+      },
+      "2": {
+          "input": ["0"],
+    	  "output": ["5"],
+          "image": ["task_b:v1.0"],
+          "cpuNum": ["4000"],
+          "memNum": ["8000"],
+          "args": [],
+          "labelName": ["app"],
+          "labelValue": ["task"],
+          "timeout": ["7"],
+          "minCpu": ["500"],
+          "minMem": ["1000"],
+          "taskFlag": ["normalTask"]
+      },
+      "3": {
+          "input": ["1"],
+    	  "output": ["5"],
+          "image": ["task_c:v1.0"],
+          "cpuNum": ["4000"],
+          "memNum": ["8000"],
+          "args": [],
+          "labelName": ["app"],
+          "labelValue": ["task"],
+          "timeout": ["8"],
+          "minCpu": ["500"],
+          "minMem": ["1000"],
+          "taskFlag": ["normalTask"]
+      },
+      "4": {
+          "input": ["1"],
+          "output": ["5"],
+          "image": ["task_d:v1.0"],
+          "cpuNum": ["4000"],
+          "memNum": ["8000"],
+          "args": [],
+          "labelName": ["app"],
+          "labelValue": ["task"],
+          "timeout": ["8"],
+          "minCpu": ["500"],
+          "minMem": ["1000"],
+          "taskFlag": ["normalTask"]
+      },
+      "5": {
+    	  "input": ["1","2","3","4"],
+    	  "output": [],
+          "image": ["task_e:v1.0"],
+          "cpuNum": ["4000"],
+          "memNum": ["8000"],
+          "args": [],
+          "labelName": ["app"],
+          "labelValue": ["task"],
+          "timeout": ["9"],
+          "minCpu": ["500"],
+          "minMem": ["1000"],
+          "taskFlag": ["endTask"]
+      }
+
+    }

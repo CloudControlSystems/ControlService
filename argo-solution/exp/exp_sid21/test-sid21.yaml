@@ -1,0 +1,370 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: sid-custom-
+spec:
+  entrypoint: sid
+  arguments:
+    parameters:
+    - name: valueA
+    - name: valueB
+    - name: valueC
+    - name: valueD
+    - name: valueE
+    - name: valueF
+    - name: valueG
+    - name: valueH
+    - name: valueI
+    - name: valueJ
+    - name: valueK
+    - name: valueL
+    - name: valueM
+    - name: valueW
+    - name: valueO
+    - name: valueP
+    - name: valueQ
+    - name: valueR
+    - name: valueS
+    - name: valueT
+    - name: valueU
+    - name: redisServer
+  templates:
+  - name: task0
+    retryStrategy:
+      limit: 3
+    inputs:
+      parameters:
+      - name: message0
+      - name: task0
+    container:
+            #image: docker/whalesay:latest
+      image: task_0:argo
+      imagePullPolicy: IfNotPresent
+      resources:
+        requests:
+          memory: "2000Mi"
+          cpu: "1000m"
+        limits:
+          memory: "2000Mi"
+          cpu: "1000m"
+      command: [python3, task.py]
+      args: ["{{inputs.parameters.task0}}", "{{inputs.parameters.message0}}"]
+
+
+  - name: taska
+    retryStrategy:
+      limit: 3
+    inputs:
+      parameters:
+      - name: messagea
+      - name: taska
+    container:
+            #image: docker/whalesay:latest
+      image: task_a:argo
+      imagePullPolicy: IfNotPresent
+      resources:
+        requests:
+          memory: "2000Mi"
+          cpu: "1000m"
+        limits:
+          memory: "2000Mi"
+          cpu: "1000m"      
+      command: [python3, task.py]
+      args: ["{{inputs.parameters.taska}}", "{{inputs.parameters.messagea}}"]
+
+  - name: taskb
+    retryStrategy:
+      limit: 3
+    inputs:
+      parameters:
+      - name: messageb
+      - name: taskb
+    container:
+            #image: docker/whalesay:latest
+      image: task_b:argo
+      imagePullPolicy: IfNotPresent
+      resources:
+        requests:
+          memory: "2000Mi"
+          cpu: "1000m"
+        limits:
+          memory: "2000Mi"
+          cpu: "1000m"      
+      command: [python3, task.py]
+      args: ["{{inputs.parameters.taskb}}", "{{inputs.parameters.messageb}}"]
+
+  - name: taskc
+    retryStrategy:
+      limit: 3
+    inputs:
+      parameters:
+      - name: messagec
+      - name: taskc
+    container:
+            #image: docker/whalesay:latest
+      image: task_c:argo
+      imagePullPolicy: IfNotPresent
+      resources:
+        requests:
+          memory: "2000Mi"
+          cpu: "1000m"
+        limits:
+          memory: "2000Mi"
+          cpu: "1000m"     
+      command: [python3, task.py]
+      args: ["{{inputs.parameters.taskc}}", "{{inputs.parameters.messagec}}"]
+
+  - name: taskd
+    retryStrategy:
+      limit: 3
+    inputs:
+      parameters:
+      - name: messaged
+      - name: taskd
+    container:
+            #image: docker/whalesay:latest
+      image: task_d:argo
+      imagePullPolicy: IfNotPresent
+      resources:
+        requests:
+          memory: "2000Mi"
+          cpu: "1000m"
+        limits:
+          memory: "2000Mi"
+          cpu: "1000m"      
+      command: [python3, task.py]
+      args: ["{{inputs.parameters.taskd}}", "{{inputs.parameters.messaged}}"]
+
+  - name: taske
+    retryStrategy:
+      limit: 3
+    inputs:
+      parameters:
+      - name: messagee
+      - name: taske
+    container:
+            #image: docker/whalesay:latest
+      image: task_e:argo
+      imagePullPolicy: IfNotPresent
+      resources:
+        requests:
+          memory: "2000Mi"
+          cpu: "1000m"
+        limits:
+          memory: "2000Mi"
+          cpu: "1000m"       
+      command: [python3, task.py]
+      args: ["{{inputs.parameters.taske}}", "{{inputs.parameters.messagee}}"]
+
+  - name: sid  
+    dag:
+      tasks:
+      - name: A
+        template: task0
+        arguments:
+          parameters: 
+          - name: message0
+            value: "{{workflow.parameters.redisServer}}"
+          - name: task0
+            value: "{{workflow.parameters.valueA}}"
+
+      - name: B
+        dependencies: [A]
+        template: taska
+        arguments:
+          parameters: 
+          - name: messagea
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taska
+            value: "{{workflow.parameters.valueB}}"
+
+      - name: C
+        dependencies: [A]
+        template: taskb
+        arguments:
+          parameters: 
+          - name: messageb
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskb
+            value: "{{workflow.parameters.valueC}}"
+
+      - name: D
+        dependencies: [B]
+        template: taskc
+        arguments:
+          parameters: 
+          - name: messagec
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskc
+            value: "{{workflow.parameters.valueD}}"
+      
+      - name: E
+        dependencies: [B]
+        template: taskc
+        arguments:
+          parameters: 
+          - name: messagec
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskc
+            value: "{{workflow.parameters.valueE}}"
+
+      - name: F
+        dependencies: [B]
+        template: taskc
+        arguments:
+          parameters: 
+          - name: messagec
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskc
+            value: "{{workflow.parameters.valueF}}"
+
+      - name: G
+        dependencies: [B]
+        template: taskc
+        arguments:
+          parameters: 
+          - name: messagec
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskc
+            value: "{{workflow.parameters.valueG}}"
+
+      - name: H
+        dependencies: [B]
+        template: taskc
+        arguments:
+          parameters: 
+          - name: messagec
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskc
+            value: "{{workflow.parameters.valueH}}"
+
+      - name: I
+        dependencies: [B]
+        template: taskc
+        arguments:
+          parameters: 
+          - name: messagec
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskc
+            value: "{{workflow.parameters.valueI}}"
+
+      - name: J
+        dependencies: [B]
+        template: taskc
+        arguments:
+          parameters: 
+          - name: messagec
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskc
+            value: "{{workflow.parameters.valueJ}}"
+
+      - name: K
+        dependencies: [B]
+        template: taskc
+        arguments:
+          parameters: 
+          - name: messagec
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskc
+            value: "{{workflow.parameters.valueK}}"
+
+      - name: L
+        dependencies: [B]
+        template: taskc
+        arguments:
+          parameters: 
+          - name: messagec
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskc
+            value: "{{workflow.parameters.valueL}}"
+
+      - name: M
+        dependencies: [B]
+        template: taskc
+        arguments:
+          parameters: 
+          - name: messagec
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskc
+            value: "{{workflow.parameters.valueM}}"
+
+      - name: W
+        dependencies: [D,E]
+        template: taskd
+        arguments:
+          parameters: 
+          - name: messaged
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskd
+            value: "{{workflow.parameters.valueW}}"
+
+      - name: O
+        dependencies: [F,G]
+        template: taskd
+        arguments:
+          parameters: 
+          - name: messaged
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskd
+            value: "{{workflow.parameters.valueO}}"
+
+      - name: P
+        dependencies: [H,I]
+        template: taskd
+        arguments:
+          parameters: 
+          - name: messaged
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskd
+            value: "{{workflow.parameters.valueP}}"
+
+      - name: Q
+        dependencies: [J,K]
+        template: taskd
+        arguments:
+          parameters: 
+          - name: messaged
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskd
+            value: "{{workflow.parameters.valueQ}}"
+
+      - name: R
+        dependencies: [L,M]
+        template: taskd
+        arguments:
+          parameters: 
+          - name: messaged
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskd
+            value: "{{workflow.parameters.valueR}}"
+
+      - name: S
+        dependencies: [W,O]
+        template: taskd
+        arguments:
+          parameters: 
+          - name: messaged
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskd
+            value: "{{workflow.parameters.valueS}}"
+
+      - name: T
+        dependencies: [P,Q]
+        template: taskd
+        arguments:
+          parameters: 
+          - name: messaged
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taskd
+            value: "{{workflow.parameters.valueT}}"
+
+      - name: U
+        dependencies: [B,C,R,S,T]
+        template: taske
+        arguments:
+          parameters: 
+          - name: messagee
+            value: "{{workflow.parameters.redisServer}}"
+          - name: taske
+            value: "{{workflow.parameters.valueU}}"
+
