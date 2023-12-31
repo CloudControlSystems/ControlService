@@ -1,36 +1,44 @@
-# ControlService: A containerized solution for Control-Algorithm-as-a-Service in cloud control systems.
-
+# ControlService: A containerized solution for Control-Algorithm-as-a-Service in cloud control systems
 ## Background
 
-In recent years, cloud control systems (CCSs) have emerged as a new control paradigm to 
-improve the service quality of emerging control missions, such as data-driven modeling, 
-automated and connected vehicles, etc. The existing works have used the workflow-based 
-restructured method to optimize the computation-intensive algorithms in the CCSs. 
-However, there is still a gap in the concept of cloud services. The challenges here are 
-how to define and submit these algorithms' workflows as cloud services and provide an 
-automated workflow engine to execute these algorithms' workflows in a containerized 
-manner. 
+In recent years, cloud control systems (CCSs) have emerged as a new control 
+paradigm to improve the service quality of emerging control missions, 
+such as data-driven modeling, automated and connected vehicles, etc. 
+The existing works have used the workflow-based restructured method to optimize 
+the computation-intensive algorithms in the CCSs. However, there is still a gap 
+in the concept of cloud services. The challenges here are how to define and submit 
+these algorithms' workflows as cloud services and provide an automated workflow 
+engine to execute these algorithms' workflows in a containerized manner.
 
 With these challenges, we propose a containerized solution for the 
 Control-algorithm-as-a-Service (C3aS) in the CCSs, namely `ControlService`. 
-It offers the control algorithm as a cloud workflow service and uses the customized 
-workflow engine to realize the containerized execution of the cloud workflow service. 
-First, we employ the cloud workflow representation method to define a control algorithm 
-as an abstract cloud workflow form. Afterward, we provide the cloud service representation 
-of abstract cloud workflow. Next, we design a workflow engine and submit the cloud service 
-to this workflow engine to implement containerized execution of this cloud service in 
+It offers the control algorithm as a cloud workflow service and uses the 
+customized workflow engine to realize the containerized execution of the cloud 
+workflow service. First, we employ the cloud workflow representation method to 
+define a control algorithm as an abstract cloud workflow form. Afterward, we 
+provide the cloud service representation of abstract cloud workflow. 
+Next, we design a workflow engine and submit the cloud service to this 
+workflow engine to implement containerized execution of this cloud service in 
 the CCSs.
 
+
 ## Access notification
+Over the past two years, our team has been dedicated to the practical application 
+research of cloud control systems (CCSs), trying to describe or run the control 
+algorithm or application using cloud workflow. Up to now, a containerized solution 
+for Control-Algorithm-as-a-Service (C3aS) named `ControlService` has been presented. 
+We have open-sourced the `ControlService`, which has been applied to the workflow 
+containerized execution of subspace identification algorithm. 
+The solution greatly accelerates the execution efficiency of subspace 
+identification algorithm. You can deploy the `ControlService` solution and test 
+the performance improvement of the subspace identification algorithm under the 
+`ControlService` solution and the `Argo` solution.
 
-Over the past two years, our team has been dedicated to the practical application research of cloud control systems (CCSs), trying to describe or run the control algorithm or application using cloud workflow. Up to now, a containerized solution for 
-Control-Algorithm-as-a-Service (C3aS) named `ControlService` has been presented. We have open-sourced the `ControlService`, which has been applied to the workflow containerized execution of subspace identification algorithm. The solution greatly accelerates the execution efficiency of subspace identification algorithm. You can deploy the `ControlService` solution and test the performance improvement of 
-the subspace identification algorithm under the `ControlService` solution and the `Argo` solution.
-
-We welcome you to download, learn, and work together to maintain the `ControlService` with 
-us. If you use it for scientific research and engineering applications, please be sure 
-to protect the copyright and indicate authors and source.
-![The Overview of ControlService for Cloud Control Systems.](figures/arch.png "Overview of ControlService for Cloud Control Systems.")
+We welcome you to download, learn, and work together to maintain the 
+`ControlService` with us. If you use it for scientific research and engineering 
+applications, please be sure to protect the copyright and indicate authors and 
+source.
+![The Overview of ControlService for CCSs.](figures/arch.png "Overview of ControlService for CCSs.")
 
 *A complete containerization solution for C3aS includes workflow-based cloud service 
 definition, cloud service submission, workflow scheduling, and workflow execution. 
