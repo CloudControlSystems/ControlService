@@ -1,4 +1,4 @@
-# ControlService: A contaierized solution for Control-Algorithm-as-a-Service in cloud control systems.
+# ControlService: A containerized solution for Control-Algorithm-as-a-Service in cloud control systems.
 
 ## Background
 
